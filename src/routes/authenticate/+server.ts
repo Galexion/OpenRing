@@ -17,9 +17,9 @@ export async function POST({ request }) {
 		if (!await checkUserExists(user)) {
 			return json({"error":"User Does Not Exist."})
 		} else {
-			let authenticated = await authenticateUser(user,pass)
-			if(authenticated) {
-				return json({"status":authenticated})
+			let authenticated:any = await authenticateUser(user,pass)
+			if(authenticated.status) {
+				return json({"status":authenticated.status,"token":authenticated.token,"webring_id":authenticated.webring_id})
 			} else {
 				return json({"error":"Password is incorrect."})
 			}

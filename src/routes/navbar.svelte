@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let navType = 0
+    export let navType:number = 0
 </script>
 <style>
     .material-symbols-outlined {

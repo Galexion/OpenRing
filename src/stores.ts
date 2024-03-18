@@ -4,11 +4,10 @@ const db = new sqlite3.Database("./database.db")
 
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-var id = crypto.randomBytes(20).toString('hex');
 
 async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  const isValid = await bcrypt.compare(password, hashedPassword);
-  return isValid;
+    const isValid = await bcrypt.compare(password, hashedPassword);
+    return isValid;
 }
 
 function sanitizeInput(input: string): string {
@@ -61,7 +60,7 @@ export async function createUser(user: string, pass: string, website: string) {
   `;
 
     return new Promise((resolve, reject) => {
-        db.run(sql, [sanitizedUsername, sanitizedWebsite, null, null,true], async (err) => {
+        db.run(sql, [sanitizedUsername, sanitizedWebsite, null, null, true], async (err) => {
             if (err) {
                 console.error(err.message);
                 reject({ "error": err.message })
@@ -81,6 +80,27 @@ export async function createUser(user: string, pass: string, website: string) {
     });
 }
 
+
+export async function verifyToken(token: string, webring_id:number) {
+    const query = 'SELECT * FROM userTokens WHERE token = ?';
+
+    return new Promise((resolve, reject) => {
+        db.get(query, [token], async (err, row: any) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(webring_id)
+                if(row.webring_id == webring_id) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            }
+        });
+
+    })
+}
+
 export async function authenticateUser(user: string, pass: string) {
     const sanitizedUsername = sanitizeInput(user);
     const sanitizedPassword = sanitizeInput(pass);
@@ -91,7 +111,29 @@ export async function authenticateUser(user: string, pass: string) {
             if (err) {
                 reject(err);
             } else {
-                resolve(await verifyPassword(sanitizedPassword,row.password));
+                console.log(row)
+                let webring_id = row.webring_id
+                let authenticated = await verifyPassword(sanitizedPassword, row.password)
+                if (authenticated) {
+                    const sql = `
+      INSERT INTO userTokens (webring_id, token)
+      VALUES (?, ?)
+    `;
+                    var id = crypto.randomBytes(20).toString('hex');
+                    db.run(sql, [webring_id, id], (err) => {
+                        if (err) {
+                            console.error(err.message);
+                            reject({ "error": err.message })
+                        } else {
+                            console.log('Row inserted successfully');
+                            resolve({ "status": authenticated, "token": id, "webring_id": webring_id });
+                        }
+                    });
+
+                } else {
+                    resolve({ "status": authenticated });
+
+                }
             }
         });
     });

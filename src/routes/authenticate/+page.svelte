@@ -9,21 +9,18 @@
 
 		// Send form data to server
 
-		console.log(
-			{
-				type: event.target.action.value,
-				user: event.target.username.value,
-				passLength: event.target.password.value.length,
-				site: event.target.website?.value || null
-			}
-		);
+		console.log({
+			type: event.target.action.value,
+			user: event.target.username.value,
+			passLength: event.target.password.value.length,
+			site: event.target.website?.value || null
+		});
 		let reqBody;
-		if(event.target.action.value == 1) {
-			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}"}`
+		if (event.target.action.value == 1) {
+			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}"}`;
 		} else {
-		 reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}","site":"${event.target.website.value}"}`
+			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}","site":"${event.target.website.value}"}`;
 		}
-
 
 		const response = await fetch('/authenticate', {
 			method: 'POST',
@@ -36,34 +33,36 @@
 				if (res.error) {
 					console.log('triggering error');
 					error = `> Attention: ` + res.error;
-					const node = document.getElementById("error-box");
-					const existingError = document.getElementById("error-msg");
+					const node = document.getElementById('error-box');
+					const existingError = document.getElementById('error-msg');
 
-					if(!existingError) {
-					const blockquote = document.createElement("blockquote");
-					const para = document.createElement("p");
+					if (!existingError) {
+						const blockquote = document.createElement('blockquote');
+						const para = document.createElement('p');
 
-					para.textContent = error;
-					para.classList.add("chivo-mono-sub")
-					para.id = "error-msg"
-					blockquote.id = "error-bq"
+						para.textContent = error;
+						para.classList.add('chivo-mono-sub');
+						para.id = 'error-msg';
+						blockquote.id = 'error-bq';
 
-					blockquote?.append(para);
-					node?.append(blockquote);
+						blockquote?.append(para);
+						node?.append(blockquote);
 					} else {
 						existingError.textContent = error;
 					}
 				}
+				const currentDate = new Date();
+				const expiryDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
+				console.log(`Response:`+ JSON.stringify(res))
+				document.cookie = `token=${res.token}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
+				document.cookie = `webring_id=${res.webring_id}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
 				// Redirect or perform other actions as needed
+				
 			});
 	}
 </script>
 
-<div id="error-box">
-
-
-
-</div>
+<div id="error-box"></div>
 <div class="flex" style="width:100%; padding-top:2vh">
 	<div class="flex-item center">
 		<h2 class="chivo-mono-sub">Sign-Up</h2>

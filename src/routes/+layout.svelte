@@ -1,5 +1,22 @@
 <script lang="ts">
 	import Navbar from './navbar.svelte';
+	let navType = 0;
+	function getCookie(cname:string) {
+		let name = cname + '=';
+		let ca = document.cookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return '';
+	}
+
+	
 </script>
 
 <head>
@@ -16,7 +33,7 @@
 			--secondary: #dedcff;
 			--accent: #444093;
 			--errorc1: rgba(255, 149, 149, 0.05);
-  			--errorc2: rgba(255, 152, 152, 0.12);
+			--errorc2: rgba(255, 152, 152, 0.12);
 		}
 
 		body {
@@ -75,13 +92,13 @@
 			transition: all 0.25s;
 		}
 
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 300,
-          'GRAD' 0,
-          'opsz' 24
-        }
+		.material-symbols-outlined {
+			font-variation-settings:
+				'FILL' 0,
+				'wght' 300,
+				'GRAD' 0,
+				'opsz' 24;
+		}
 		.material-icons {
 			display: inline-flex;
 			vertical-align: bottom;
@@ -103,16 +120,22 @@
 		}
 
 		#error-box blockquote {
-  			background: repeating-linear-gradient(45deg, var(--errorc1), var(--errorc1) 10px, var(--errorc2) 10px, var(--errorc2) 20px);
-  			padding: 10px 20px 10px 20px;
-  			margin: 16px 0;
-  			border-left: solid #ff7c7c 3px;
-  			border-radius: 5px;
+			background: repeating-linear-gradient(
+				45deg,
+				var(--errorc1),
+				var(--errorc1) 10px,
+				var(--errorc2) 10px,
+				var(--errorc2) 20px
+			);
+			padding: 10px 20px 10px 20px;
+			margin: 16px 0;
+			border-left: solid #ff7c7c 3px;
+			border-radius: 5px;
 		}
 	</style>
 </head>
 <body>
-	<Navbar />
+	<Navbar {navType} />
 	<hr style="margin-top:-1em;width:90vw" />
 	<slot />
 </body>
