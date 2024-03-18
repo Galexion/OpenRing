@@ -11,6 +11,7 @@
     }
     </style>
 <nav>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> 
     <span id="logo-nav">
         <h1 class="chivo-mono-header">RoboNet</h1>
         <h4 class="chivo-mono-sub" style="margin-top:-1.25em">

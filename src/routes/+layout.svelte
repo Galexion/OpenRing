@@ -1,22 +1,47 @@
 <script lang="ts">
-	import Navbar from './navbar.svelte';
-	let navType = 0;
-	function getCookie(cname:string) {
-		let name = cname + '=';
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
-		}
-		return '';
-	}
+    import Navbar from './navbar.svelte';
+    import { onMount } from 'svelte';
 
-	
+    let navType = 0;
+    let webring_id: string | null = null;
+    let token: string | null = null;
+
+    function getCookie(cname: string) {
+        let name = cname + '=';
+        let ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return '';
+    }
+
+    onMount(() => {
+        webring_id = getCookie('webring_id');
+        token = getCookie('token');
+
+        if (token && webring_id) {
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'User-Agent': 'insomnia/2023.5.8' },
+                body: `{"token":"${token}","webring_id":${webring_id}}`
+            };
+            fetch('/authenticate/token', options)
+                .then((response) => response.json())
+                .then((response) => {
+                    console.log(response);
+                    if (response.status) {
+                        navType = 1;
+                    }
+                })
+                .catch((err) => console.error(err));
+        }
+    });
 </script>
 
 <head>

@@ -53,11 +53,12 @@
 				}
 				const currentDate = new Date();
 				const expiryDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
-				console.log(`Response:`+ JSON.stringify(res))
+				console.log(`Response:` + JSON.stringify(res));
 				document.cookie = `token=${res.token}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
 				document.cookie = `webring_id=${res.webring_id}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
 				// Redirect or perform other actions as needed
-				
+
+				window.location.replace('/user');
 			});
 	}
 </script>
