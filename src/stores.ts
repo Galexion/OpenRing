@@ -150,3 +150,15 @@ export function getWebringData(): Promise<any> {
         });
     });
 }
+
+export function updateWebringData(buttonGif:string,ProfilePicture:string,webring_id:number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        db.all(`UPDATE ringData SET buttonGif="${buttonGif}", profilePicture="${ProfilePicture}" WHERE webring_id=${webring_id}`, (err, rows) => {
+            if (err) {
+                console.error('Error Processing Ring Data', err.message);
+                return reject("Couldn't Process Ring Data.");
+            }
+            resolve(true);
+        });
+    });
+}

@@ -1,5 +1,18 @@
 <script lang="ts">
     export let navType:number = 0
+
+    function removeCookies() {
+        // Set the expiration date to a date in the past
+        const expirationDate = new Date(0).toUTCString();
+
+        // Set the token cookie to expire
+        document.cookie = `token=; expires=${expirationDate}`;
+
+        // Set the webring_id cookie to expire
+        document.cookie = `webring_id=; expires=${expirationDate}`;
+        
+			window.location = '/';
+    }
 </script>
 <style>
     .material-symbols-outlined {
@@ -27,7 +40,7 @@
             {#if navType == 1}
             <a href="/user/">Profile</a>
             /
-            <a href="/user/"><span class="material-symbols-outlined material-icons" style="margin-bottom:2px;">
+            <a href="/" on:click={removeCookies}><span class="material-symbols-outlined material-icons" style="margin-bottom:2px;">
                 logout
                 </span></a>
             {:else}

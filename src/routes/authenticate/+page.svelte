@@ -8,18 +8,11 @@
 		event.preventDefault();
 
 		// Send form data to server
-
-		console.log({
-			type: event.target.action.value,
-			user: event.target.username.value,
-			passLength: event.target.password.value.length,
-			site: event.target.website?.value || null
-		});
 		let reqBody;
 		if (event.target.action.value == 1) {
-			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}"}`;
+			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value.toLowerCase()}","pass":"${event.target.password.value}"}`;
 		} else {
-			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value}","pass":"${event.target.password.value}","site":"${event.target.website.value}"}`;
+			reqBody = `{"type":${event.target.action.value},"user":"${event.target.username.value.toLowerCase()}","pass":"${event.target.password.value}","site":"${event.target.website.value}"}`;
 		}
 
 		const response = await fetch('/authenticate', {
@@ -50,15 +43,16 @@
 					} else {
 						existingError.textContent = error;
 					}
-				}
+				} else {
+					
 				const currentDate = new Date();
 				const expiryDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
-				console.log(`Response:` + JSON.stringify(res));
 				document.cookie = `token=${res.token}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
 				document.cookie = `webring_id=${res.webring_id}; expires=${expiryDate.toUTCString()}; SameSite=Strict `;
 				// Redirect or perform other actions as needed
 
 				window.location.replace('/user');
+				}
 			});
 	}
 </script>

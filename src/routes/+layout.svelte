@@ -34,7 +34,6 @@
             fetch('/authenticate/token', options)
                 .then((response) => response.json())
                 .then((response) => {
-                    console.log(response);
                     if (response.status) {
                         navType = 1;
                     }
