@@ -1,5 +1,5 @@
 import { json, text } from '@sveltejs/kit';
-import { createUser, authenticateUser, checkUserExists, checkSiteExists } from '../../stores'
+import { createUser, authenticateUser, checkUserExists, checkSiteExists } from '$lib/stores'
 export async function POST({ request }) {
 	const { type, user, pass, site } = await request.json(); 
 	if ( type == null || user == null || pass == null ) return json({"error":"Authentication Type or Required Field is Missing."}); // reject request if type is missing

@@ -162,3 +162,42 @@ export function updateWebringData(buttonGif:string,ProfilePicture:string,webring
         });
     });
 }
+
+export function nextWebsite(webring_id:number) {
+    const query = 'SELECT * FROM ringData WHERE webring_id = (SELECT MIN(webring_id) FROM ringData WHERE webring_id > (SELECT webring_id FROM ringData WHERE webring_id = ?)) LIMIT 1;';
+    const query2 = 'SELECT * FROM ringData WHERE webring_id = (SELECT MIN(webring_id) FROM ringData WHERE webring_id < (SELECT webring_id FROM ringData WHERE webring_id = ?)) OR webring_id = ( SELECT MAX(webring_id) FROM ringData) LIMIT 1;';
+
+    return new Promise((resolve, reject) => {
+        db.get(query, [webring_id], async (err, row: any) => {
+            if (err) {
+                reject(err);
+            } else {
+                if(row) {
+                    resolve(row)
+                } else {
+                    db.get(query2, [webring_id], async (err, row: any) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(row)
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
+
+export function previousWebsite(webring_id:number) {
+    const query = 'SELECT * FROM ringData WHERE webring_id = ( SELECT MAX(webring_id) FROM ringData WHERE webring_id < (SELECT webring_id FROM ringData WHERE webring_id = ?)) OR webring_id = ( SELECT MAX(webring_id) FROM ringData) LIMIT 1';
+
+    return new Promise((resolve, reject) => {
+        db.get(query, [webring_id], async (err, row: any) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row)
+            }
+        });
+    });
+}

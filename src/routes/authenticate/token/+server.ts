@@ -1,5 +1,5 @@
 import { json, text } from '@sveltejs/kit';
-import { verifyToken } from '../../../stores'
+import { verifyToken } from '$lib/stores'
 
 export async function POST({ request }) {
 	const { token,webring_id } = await request.json(); 

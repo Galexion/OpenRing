@@ -1,5 +1,5 @@
 // +page.server.js
-import { getWebringData } from '../../stores';
+import { getWebringData } from '$lib/stores';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {

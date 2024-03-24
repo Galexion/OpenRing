@@ -23,7 +23,11 @@
 		<div class="flex">
 			<span>
 				<h2 style="">
+					{#if (bead.website.toLowerCase().startsWith('https://'))}
 					{bead.username} &gt; <i><b>{bead.website.slice(8, bead.website.length - 1)}</b></i>
+					{:else if (bead.website.toLowerCase().startsWith('http://'))}
+						{bead.username} &gt; <i><b>{bead.website.slice(7, bead.website.length - 1)}</b></i>
+					{/if}
 				</h2>
 			</span>
 			<span style="margin-left:1em;margin-top:-4px">
