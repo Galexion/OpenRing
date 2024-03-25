@@ -31,7 +31,12 @@
 				</h2>
 			</span>
 			<span style="margin-left:1em;margin-top:-4px">
-				<a href={bead.website}> <img src={bead.buttonGif} alt="{bead.username}'s website" /></a>
+				<a href={bead.website}><picture>
+					<source id="s1" srcset={bead.buttonGif} type="image/png">
+					<img src="https://cdn.galexion.link/roboring/robonetstandbybutton.gif" alt="{bead.username}'s website" onerror="this.onerror=null;
+					document.getElementById('s1').srcset=this.src;">
+				</picture>
+				</a>
 			</span>
 		</div>
 		<hr style="width:75vw" />

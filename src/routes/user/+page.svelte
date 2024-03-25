@@ -74,7 +74,11 @@
 		</span>
 		<span>
 			<h3 class="chivo-mono-sub">Preview</h3>
-			<img src={siteButton} height="50px" alt="Button Preview" />
+			<picture>
+				<source id="s1" srcset={siteButton} type="image/png">
+				<img src="https://cdn.galexion.link/roboring/robonetstandbybutton.gif" height="50px" alt="Button Preview" onerror="this.onerror=null;
+				document.getElementById('s1').srcset=this.src;" />
+			</picture>
 		</span>
 	</div>
 	<br />
